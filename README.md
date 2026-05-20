@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # HuruInk
 
 **Draw in the air.** — A webcam-based air drawing app using MediaPipe hand tracking.
@@ -68,3 +69,6 @@ src/
 - Local WASM bundling for offline use
 - Multi-stroke pressure simulation
 - Mobile/tablet layout polish
+=======
+# HuruInk
+>>>>>>> 84c57538f301e00ad7609986749f1f8eba5439a6
