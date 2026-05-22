@@ -6,12 +6,17 @@
 
 HuruInk is a browser-based computer vision drawing app that lets users draw on a digital canvas using hand gestures.
 
-It uses webcam-based hand tracking to detect the user's finger movement and turns gestures into drawing actions.
+It uses webcam-based hand tracking to detect finger movement and turn natural hand gestures into drawing actions.
 
 <br/>
 
+<img src="./src/assets/hero.png" alt="HuruInk preview" width="100%" />
+
+<br/><br/>
+
 <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react" />
 <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
+<img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" />
 <img src="https://img.shields.io/badge/MediaPipe-FF6F00?style=for-the-badge" />
 <img src="https://img.shields.io/badge/HTML_Canvas-000000?style=for-the-badge" />
 
@@ -99,22 +104,24 @@ This project taught me how difficult but exciting it is to make software feel na
 6. Canvas strokes are rendered in real time.
 7. The user can erase, undo, clear, or export the drawing.
 
----
-
 ## Demo
 
-Demo video coming soon.
+<div align="center">
 
-Recommended demo:
+<img src="./src/assets/hero.png" alt="HuruInk app preview" width="100%" />
 
-- Start camera
-- Show finger cursor tracking
-- Draw using pinch gesture
-- Change brush color
-- Use eraser or undo
-- Export the drawing as PNG
+</div>
 
----
+> Demo GIF/video coming soon.
+
+Recommended demo flow:
+
+1. Start camera
+2. Show finger cursor tracking
+3. Pinch thumb + index finger to draw
+4. Change brush color or brush size
+5. Use undo / clear
+6. Export the drawing as PNG
 
 ## Quick Start
 
