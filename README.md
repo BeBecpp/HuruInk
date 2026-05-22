@@ -121,3 +121,41 @@ Recommended demo:
 ```bash
 npm install
 npm run dev
+
+Open the local development URL shown in the terminal.
+
+Usually:
+
+http://localhost:5173
+
+Camera access requires localhost or HTTPS.
+
+Project Structure
+src/
+  components/   UI components
+  hooks/        Camera, hand tracking, and canvas logic
+  utils/        Gesture, geometry, smoothing, and drawing helpers
+  types/        TypeScript types
+What I Learned
+
+While building HuruInk, I learned how to connect computer vision output with real-time user interaction.
+
+The hardest parts were:
+
+making gestures feel stable
+smoothing hand movement
+mapping webcam coordinates to canvas coordinates
+avoiding accidental drawing
+designing controls that feel natural
+
+This project helped me understand that good interactive software is not only about code. It also needs careful UX thinking.
+
+Future Improvements
+Better gesture calibration
+Mobile/tablet support
+Multi-hand drawing
+Shape recognition
+Offline MediaPipe model support
+Better brush styles
+Save drawing history
+Add tutorial overlay for first-time users
