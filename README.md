@@ -128,6 +128,8 @@ Usually:
 
 http://localhost:5173
 
+```
+
 Camera access requires localhost or HTTPS.
 
 Project Structure
