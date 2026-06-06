@@ -4,8 +4,8 @@ HuruInk is a browser-based gesture drawing app that lets you draw in the air usi
 
 ## Live Demo
 
-Live demo link placeholder: `https://your-demo-link-here.example`
-
+Live demo link placeholder: 
+](https://bebecpp.github.io/HuruInk/)
 ## Screenshot
 
 Screenshot placeholder:
