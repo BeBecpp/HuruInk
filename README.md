@@ -34,30 +34,6 @@ The idea is simple: instead of using a mouse or stylus, your hand becomes the br
 
 This repository contains the **v2.0.0 Stardance upgrade**, where HuruInk was improved from an earlier prototype into a more complete open-source creative tool.
 
----
-
-## Screenshots
-
-> Add your real screenshots inside `public/screenshots/` and keep these filenames.
-
-<div align="center">
-
-### Landing / Main UI
-
-<img src="./public/screenshots/huruink-home.png" alt="HuruInk Home Screen" width="90%" />
-
-### Drawing Mode
-
-<img src="./public/screenshots/huruink-drawing.png" alt="HuruInk Drawing Mode" width="90%" />
-
-### Gallery / Saved Drawings
-
-<img src="./public/screenshots/huruink-gallery.png" alt="HuruInk Gallery" width="90%" />
-
-</div>
-
----
-
 ## What Changed in v2
 
 HuruInk v2 is a major Stardance-focused upgrade of the original project.
