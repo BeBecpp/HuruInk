@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps, react-hooks/set-state-in-effect, react-hooks/refs */
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useCamera } from '../hooks/useCamera'
 import { useCanvasDrawing } from '../hooks/useCanvasDrawing'
 import { useHandTracking } from '../hooks/useHandTracking'
+import type { DrawingMode } from '../types/drawing'
 import type { CursorMode, CursorState } from '../types/tracking'
 import type { HandTrackingDebug, TrackingStatus } from '../types/tracking'
 import { CursorIndicator } from './CursorIndicator'
@@ -12,6 +14,7 @@ import { StatusBadge } from './StatusBadge'
 interface CameraCanvasProps {
   showStartScreen: boolean
   debugEnabled: boolean
+  toolMode: DrawingMode
   onCameraActiveChange: (active: boolean) => void
   drawing: ReturnType<typeof useCanvasDrawing>
   camera: ReturnType<typeof useCamera>
@@ -32,6 +35,7 @@ function cursorModeFromGesture(gesture: string): CursorMode {
 export function CameraCanvas({
   showStartScreen,
   debugEnabled,
+  toolMode,
   onCameraActiveChange,
   drawing,
   camera,
@@ -66,7 +70,7 @@ export function CameraCanvas({
   })
 
   const fpsFramesRef = useRef(0)
-  const fpsLastTimeRef = useRef(performance.now())
+  const fpsLastTimeRef = useRef(0)
   const fpsValueRef = useRef(0)
 
   const { videoRef, isActive, error: cameraError } = camera
@@ -149,6 +153,9 @@ export function CameraCanvas({
     const UI_INTERVAL_MS = 80
 
     const tick = (now: number) => {
+      if (fpsLastTimeRef.current === 0) {
+        fpsLastTimeRef.current = now
+      }
       fpsFramesRef.current += 1
       const elapsed = now - fpsLastTimeRef.current
       if (elapsed >= 1000) {
@@ -162,6 +169,10 @@ export function CameraCanvas({
       const gesture = refs.gesture.current
       const tip = refs.cursor.current
       const isPaused = gesture === 'open-palm-pause'
+      const wantsToDraw = gesture === 'index-draw' && toolMode === 'draw'
+      const wantsToErase =
+        gesture === 'two-finger-eraser' ||
+        (gesture === 'index-draw' && toolMode === 'erase')
 
       if (!handDetected || !tip) {
         if (wasDrawingRef.current) {
@@ -183,7 +194,7 @@ export function CameraCanvas({
           drawing.undo()
           lastUndoAtRef.current = now
           fistFrameCountRef.current = 0
-          setStatusMessage('Undo — fist gesture')
+          setStatusMessage('Undo - fist gesture')
         }
         refs.trackingStatus.current = 'hover'
       } else {
@@ -195,7 +206,7 @@ export function CameraCanvas({
             wasDrawingRef.current = false
           }
           refs.trackingStatus.current = 'paused'
-        } else if (gesture === 'two-finger-eraser') {
+        } else if (wantsToErase) {
           if (wasDrawingRef.current) {
             drawing.endStroke()
             wasDrawingRef.current = false
@@ -211,7 +222,7 @@ export function CameraCanvas({
             eraseAtPoint(tip, radius)
             lastErasePointRef.current = { x: tip.x, y: tip.y }
           }
-        } else if (gesture === 'index-draw') {
+        } else if (wantsToDraw) {
           lastErasePointRef.current = null
           if (!wasDrawingRef.current) {
             drawing.beginStrokeIfNeeded(tip)
@@ -240,14 +251,14 @@ export function CameraCanvas({
 
         let hint: string | null = null
         if (!handTracking.mediaPipeLoaded) {
-          hint = 'Loading hand tracking model…'
+          hint = 'Loading hand tracking model...'
         } else if (!handDetected && refs.rawHandCount.current === 0) {
           hint =
-            'Move hand 30–60 cm from camera. Avoid backlight. Show full hand + wrist if possible.'
+            'Move hand 30-60 cm from camera. Avoid backlight. Show full hand + wrist if possible.'
         } else if (!handDetected && refs.rawHandCount.current > 0) {
-          hint = 'Hand seen but low confidence — improve lighting or move slightly back.'
+          hint = 'Hand seen but low confidence - improve lighting or move slightly back.'
         } else if (gesture === 'fist') {
-          hint = 'Undo — fist gesture'
+          hint = 'Undo - fist gesture'
         }
 
         setStatusMessage(hint)
@@ -262,7 +273,11 @@ export function CameraCanvas({
           visible:
             handDetected && !!tip && gesture !== 'fist',
           mode: handDetected
-            ? cursorModeFromGesture(gesture)
+            ? wantsToErase
+              ? 'erase'
+              : wantsToDraw
+                ? 'draw'
+                : cursorModeFromGesture(gesture)
             : 'hidden',
         })
         setDebug({
@@ -294,7 +309,9 @@ export function CameraCanvas({
     drawing.endStroke,
     drawing.undo,
     drawing.brush.size,
+    drawing.strokeCount,
     eraseAtPoint,
+    toolMode,
   ])
 
   useEffect(() => {

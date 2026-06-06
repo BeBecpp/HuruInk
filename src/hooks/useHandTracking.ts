@@ -299,9 +299,9 @@ export function useHandTracking(
     })
   }, [videoRef, enabled, canvasWidth, canvasHeight, onFrame])
 
-  const loop = useCallback(() => {
+  const loop = useCallback(function runLoop() {
     processFrame()
-    rafRef.current = requestAnimationFrame(loop)
+    rafRef.current = requestAnimationFrame(runLoop)
   }, [processFrame])
 
   const startLoop = useCallback(() => {

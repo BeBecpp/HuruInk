@@ -14,7 +14,7 @@ const STATUS_CONFIG: Record<
     className: 'bg-slate-800/80 text-slate-300 border-slate-600/50',
   },
   'camera-loading': {
-    label: 'Starting camera…',
+    label: 'Starting camera...',
     className: 'bg-amber-900/50 text-amber-200 border-amber-600/40',
   },
   'no-hand': {
@@ -22,7 +22,7 @@ const STATUS_CONFIG: Record<
     className: 'bg-slate-800/80 text-slate-300 border-slate-600/50',
   },
   hover: {
-    label: 'Hover — point index to draw',
+    label: 'Hover - point index to draw',
     className: 'bg-cyan-900/40 text-cyan-200 border-cyan-500/40',
   },
   drawing: {
@@ -45,10 +45,10 @@ const STATUS_CONFIG: Record<
 
 const HINTS: Partial<Record<TrackingStatus, string>> = {
   'no-hand':
-    'Raise your hand 30–60 cm from the camera. Avoid bright light behind you.',
-  hover: 'Point with index only to draw. ✌️ = eraser, 🖐 = pause, ✊ = undo.',
-  drawing: 'Index finger drawing — curl other fingers to stop.',
-  erasing: 'Index + middle up — move hand to erase.',
+    'Raise your hand 30-60 cm from the camera. Avoid bright light behind you.',
+  hover: 'Point with index finger to use the selected tool.',
+  drawing: 'Drawing with index finger.',
+  erasing: 'Erasing near your index finger.',
   paused: 'Close your palm to resume drawing.',
 }
 
@@ -58,7 +58,7 @@ export function StatusBadge({ status, message }: StatusBadgeProps) {
 
   return (
     <div
-      className={`fixed bottom-6 left-6 z-40 max-w-xs rounded-2xl border px-4 py-3 backdrop-blur-xl ${config.className}`}
+      className={`fixed bottom-28 left-4 z-40 max-w-xs rounded-[8px] border px-4 py-3 backdrop-blur-xl sm:left-6 ${config.className}`}
       role="status"
       aria-live="polite"
     >

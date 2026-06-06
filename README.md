@@ -1,170 +1,116 @@
-<div align="center">
+# HuruInk v2
 
-# HuruInk
+HuruInk is a browser-based gesture drawing app that lets you draw in the air using hand movements through your webcam.
 
-### Draw in the air with your hand
+## Live Demo
 
-HuruInk is a browser-based computer vision drawing app that lets users draw on a digital canvas using hand gestures.
+Live demo link placeholder: `https://your-demo-link-here.example`
 
-It uses webcam-based hand tracking to detect finger movement and turn natural hand gestures into drawing actions.
+## Screenshot
 
-<br/>
+Screenshot placeholder:
 
-<img src="./src/assets/hero.png" alt="HuruInk preview" width="100%" />
+```md
+![HuruInk v2 screenshot](./public/screenshot.png)
+```
 
-<br/><br/>
+You can also use the existing preview image:
 
-<img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react" />
-<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
-<img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" />
-<img src="https://img.shields.io/badge/MediaPipe-FF6F00?style=for-the-badge" />
-<img src="https://img.shields.io/badge/HTML_Canvas-000000?style=for-the-badge" />
-
-</div>
-
----
-
-## What It Does
-
-HuruInk turns your hand into a drawing tool.
-
-Instead of using a mouse, tablet, or stylus, users can draw directly in the air using their index finger and simple hand gestures.
-
-The app tracks the hand through the webcam, detects gestures, and renders strokes on an HTML canvas in real time.
-
----
-
-## Why I Built It
-
-I wanted to build something visual, interactive, and fun — not just another normal web app.
-
-HuruInk helped me explore:
-
-- computer vision
-- hand tracking
-- gesture-based interfaces
-- real-time interaction
-- creative coding
-- canvas rendering
-- user experience design
-
-This project taught me how difficult but exciting it is to make software feel natural and physical.
-
----
+```md
+![HuruInk preview](./src/assets/hero.png)
+```
 
 ## Features
 
-| Feature | Description |
-|---|---|
-| Webcam hand tracking | Tracks the user's hand through the camera |
-| Finger cursor | Uses the index finger as a cursor |
-| Pinch to draw | Draws when the user pinches thumb and index finger |
-| Brush controls | Supports brush color and size changes |
-| Eraser mode | Allows users to erase strokes |
-| Undo | Removes the last stroke |
-| Clear canvas | Clears the full drawing |
-| PNG export | Saves the drawing as an image |
-| Smooth drawing | Uses smoothing logic for better stroke quality |
-
----
-
-## Hand Gestures
-
-| Gesture | Action |
-|---|---|
-| Index finger up | Move cursor |
-| Pinch thumb + index finger | Start drawing |
-| Release pinch | Stop drawing |
-| Two fingers up | Eraser mode |
-| Open palm | Pause drawing |
-| Closed fist | Undo last stroke |
-
----
+- Webcam-powered hand tracking with MediaPipe Tasks Vision
+- Air drawing with a mirrored camera preview
+- Draw mode and erase mode
+- Brush color presets plus custom color picker
+- Brush size control
+- Undo last stroke
+- Clear canvas button
+- Save drawing as PNG
+- Local gallery/history saved in `localStorage`
+- Camera permission loading and error states
+- Responsive UI for desktop and mobile
+- Keyboard shortcuts: `C` clear, `S` save, `D` draw, `E` erase
+- Optional debug panel for tracking values
 
 ## Tech Stack
 
-| Area | Tools |
-|---|---|
-| Frontend | React, TypeScript, Vite |
-| Styling | Tailwind CSS |
-| Computer Vision | MediaPipe Tasks Vision |
-| Drawing | HTML Canvas API |
-| Interaction | Gesture detection, hand landmark tracking |
-| Export | Transparent PNG export |
+- Vite
+- React
+- TypeScript
+- Tailwind CSS v4
+- MediaPipe Tasks Vision
+- HTML Canvas API
+- Lucide React icons
+- Browser `localStorage`
 
----
-
-## How It Works
-
-1. The user starts the webcam.
-2. MediaPipe detects hand landmarks from the video feed.
-3. HuruInk tracks the index finger position.
-4. The app detects gestures such as pinch, open palm, or fist.
-5. Drawing starts when the pinch gesture is active.
-6. Canvas strokes are rendered in real time.
-7. The user can erase, undo, clear, or export the drawing.
-
-## Demo
-
-<div align="center">
-
-<img src="./src/assets/hero.png" alt="HuruInk app preview" width="100%" />
-
-</div>
-
-> Demo GIF/video coming soon.
-
-Recommended demo flow:
-
-1. Start camera
-2. Show finger cursor tracking
-3. Pinch thumb + index finger to draw
-4. Change brush color or brush size
-5. Use undo / clear
-6. Export the drawing as PNG
-
-## Quick Start
+## How to Run Locally
 
 ```bash
 npm install
 npm run dev
-
-Open the local development URL shown in the terminal.
-
-Usually:
-
-http://localhost:5173
-
 ```
 
-Camera access requires localhost or HTTPS.
+Open the Vite local URL, usually:
 
-Project Structure
-src/
-  components/   UI components
-  hooks/        Camera, hand tracking, and canvas logic
-  utils/        Gesture, geometry, smoothing, and drawing helpers
-  types/        TypeScript types
-What I Learned
+```bash
+http://localhost:5173
+```
 
-While building HuruInk, I learned how to connect computer vision output with real-time user interaction.
+Camera access works on `localhost`. A deployed version must use HTTPS for webcam permissions.
 
-The hardest parts were:
+Build the production version:
 
-making gestures feel stable
-smoothing hand movement
-mapping webcam coordinates to canvas coordinates
-avoiding accidental drawing
-designing controls that feel natural
+```bash
+npm run build
+```
 
-This project helped me understand that good interactive software is not only about code. It also needs careful UX thinking.
+Preview the production build:
 
-Future Improvements
-Better gesture calibration
-Mobile/tablet support
-Multi-hand drawing
-Shape recognition
-Offline MediaPipe model support
-Better brush styles
-Save drawing history
-Add tutorial overlay for first-time users
+```bash
+npm run preview
+```
+
+## What Changed in v2
+
+- Upgraded the interface into a cleaner Stardance-ready release.
+- Added explicit Draw and Erase modes.
+- Added PNG saving that also stores recent saves in a local gallery.
+- Added keyboard shortcuts for faster drawing.
+- Improved the landing/start screen, header, camera states, and responsive controls.
+- Updated project version to `2.0.0`.
+- Added release documentation with changelog and release notes.
+
+## What I Learned
+
+- How to connect webcam hand tracking to a canvas drawing workflow.
+- How to make gesture controls easier to understand with clear UI modes.
+- How to export canvas drawings as PNG files in the browser.
+- How to persist simple app history with `localStorage`.
+- How to prepare a cleaner open-source release with docs, versioning, and release notes.
+
+## Future Improvements
+
+- Add brush styles such as glow, dotted, rainbow, or calligraphy.
+- Add drawing replay from saved stroke data.
+- Add optional camera-background export.
+- Add PWA install support.
+- Improve mobile hand tracking hints.
+- Add automated UI tests for core drawing controls.
+
+## Credits / AI Usage Note
+
+Built by BeBe for Hack Club Stardance.
+
+AI usage note: "I used Codex/ChatGPT to help plan the v2 upgrade, improve the UI, debug issues, and write documentation. I reviewed and tested the generated changes myself."
+
+## Privacy
+
+HuruInk runs in the browser. Webcam frames are processed client-side, drawings are exported locally, and gallery history is stored in your browser's `localStorage`.
+
+## License
+
+This project is open source. Add a license file if you want to define exact usage rights.

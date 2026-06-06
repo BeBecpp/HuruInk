@@ -5,7 +5,11 @@ import {
   drawStroke,
   setupCanvasForDPR,
 } from '../utils/drawing'
-import { exportCanvasAsPng } from '../utils/exportImage'
+import {
+  canvasToPngDataUrl,
+  exportCanvasAsPng,
+  formatExportFilename,
+} from '../utils/exportImage'
 
 function createStrokeId(): string {
   return `stroke-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
@@ -28,7 +32,7 @@ export interface UseCanvasDrawingResult {
   cancelCurrentStroke: () => void
   undo: () => void
   clear: () => void
-  savePng: () => void
+  savePng: () => Promise<string | null>
   redraw: () => void
   eraseAtPoint: (point: Point, radius?: number) => void
 }
@@ -206,10 +210,12 @@ export function useCanvasDrawing(
     syncStrokesState()
   }, [redraw, syncStrokesState])
 
-  const savePng = useCallback(() => {
+  const savePng = useCallback(async () => {
     const canvas = canvasRef.current
-    if (!canvas) return
-    exportCanvasAsPng(canvas)
+    if (!canvas) return null
+    const dataUrl = canvasToPngDataUrl(canvas)
+    const saved = await exportCanvasAsPng(canvas, formatExportFilename())
+    return saved ? dataUrl : null
   }, [])
 
   const eraseAtPoint = useCallback(
