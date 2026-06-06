@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<img src="./public/screenshots/huruink-banner.png" alt="HuruInk Banner" width="100%" />
+<img src="public/favicon.svg" alt="HuruInk Banner" width="100%" />
 
 <br />
 
