@@ -6,17 +6,28 @@ export function formatExportFilename(): string {
   return `huruink-doodle-${y}-${m}-${d}.png`
 }
 
+export function canvasToPngBlob(canvas: HTMLCanvasElement): Promise<Blob | null> {
+  return new Promise((resolve) => {
+    canvas.toBlob((blob) => resolve(blob), 'image/png')
+  })
+}
+
+export function canvasToPngDataUrl(canvas: HTMLCanvasElement): string {
+  return canvas.toDataURL('image/png')
+}
+
 export function exportCanvasAsPng(
   canvas: HTMLCanvasElement,
   filename?: string,
-): void {
-  canvas.toBlob((blob) => {
-    if (!blob) return
+): Promise<boolean> {
+  return canvasToPngBlob(canvas).then((blob) => {
+    if (!blob) return false
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
     link.download = filename ?? formatExportFilename()
     link.click()
     URL.revokeObjectURL(url)
-  }, 'image/png')
+    return true
+  })
 }

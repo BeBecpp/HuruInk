@@ -6,9 +6,10 @@ import {
   Download,
   Eraser,
   Palette,
+  PenLine,
   Undo2,
 } from 'lucide-react'
-import type { BrushSettings } from '../types/drawing'
+import type { BrushSettings, DrawingMode } from '../types/drawing'
 
 const PRESET_COLORS = [
   '#22d3ee',
@@ -22,10 +23,12 @@ const PRESET_COLORS = [
 interface ToolbarProps {
   cameraActive: boolean
   brush: BrushSettings
+  mode: DrawingMode
   canUndo: boolean
   debugEnabled: boolean
   onStartCamera: () => void
   onStopCamera: () => void
+  onModeChange: (mode: DrawingMode) => void
   onColorChange: (color: string) => void
   onSizeChange: (size: number) => void
   onUndo: () => void
@@ -37,10 +40,12 @@ interface ToolbarProps {
 export function Toolbar({
   cameraActive,
   brush,
+  mode,
   canUndo,
   debugEnabled,
   onStartCamera,
   onStopCamera,
+  onModeChange,
   onColorChange,
   onSizeChange,
   onUndo,
@@ -49,7 +54,7 @@ export function Toolbar({
   onToggleDebug,
 }: ToolbarProps) {
   return (
-    <div className="fixed bottom-6 left-1/2 z-40 flex -translate-x-1/2 flex-wrap items-center justify-center gap-2 rounded-2xl border border-white/10 bg-black/50 px-4 py-3 shadow-2xl backdrop-blur-xl sm:gap-3">
+    <div className="fixed bottom-4 left-1/2 z-40 flex max-w-[calc(100%-1.5rem)] -translate-x-1/2 flex-wrap items-center justify-center gap-2 rounded-[8px] border border-white/10 bg-zinc-950/80 px-3 py-3 shadow-2xl backdrop-blur-xl sm:bottom-6 sm:gap-3 sm:px-4">
       {cameraActive ? (
         <ToolbarButton
           label="Stop camera"
@@ -65,6 +70,23 @@ export function Toolbar({
       )}
 
       <div className="hidden h-8 w-px bg-white/10 sm:block" />
+
+      <div className="flex rounded-[8px] border border-white/10 bg-white/5 p-1">
+        <ToolbarButton
+          label="Draw"
+          onClick={() => onModeChange('draw')}
+          active={mode === 'draw'}
+          compact
+          icon={<PenLine className="h-4 w-4" />}
+        />
+        <ToolbarButton
+          label="Erase"
+          onClick={() => onModeChange('erase')}
+          active={mode === 'erase'}
+          compact
+          icon={<Eraser className="h-4 w-4" />}
+        />
+      </div>
 
       <div className="flex items-center gap-1.5">
         <Palette className="h-4 w-4 text-slate-400" aria-hidden />
@@ -93,7 +115,7 @@ export function Toolbar({
         />
       </div>
 
-      <div className="flex min-w-[120px] items-center gap-2 px-1">
+      <div className="flex min-w-[132px] items-center gap-2 px-1">
         <span className="text-xs text-slate-400">Size</span>
         <input
           type="range"
@@ -143,12 +165,14 @@ function ToolbarButton({
   icon,
   disabled,
   active,
+  compact,
 }: {
   label: string
   onClick: () => void
   icon: ReactNode
   disabled?: boolean
   active?: boolean
+  compact?: boolean
 }) {
   return (
     <button
@@ -156,15 +180,17 @@ function ToolbarButton({
       title={label}
       onClick={onClick}
       disabled={disabled}
-      className={`flex items-center gap-2 rounded-xl border px-3 py-2 text-sm font-medium transition ${
+      className={`flex items-center gap-2 rounded-[6px] border px-3 py-2 text-sm font-medium transition ${
         active
-          ? 'border-cyan-400/50 bg-cyan-500/20 text-cyan-200'
+          ? 'border-cyan-400/50 bg-cyan-500/20 text-cyan-100'
           : 'border-white/10 bg-white/5 text-slate-200 hover:border-white/20 hover:bg-white/10'
       } disabled:cursor-not-allowed disabled:opacity-40`}
       aria-label={label}
     >
       {icon}
-      <span className="hidden md:inline">{label}</span>
+      <span className={compact ? 'hidden sm:inline' : 'hidden md:inline'}>
+        {label}
+      </span>
     </button>
   )
 }
