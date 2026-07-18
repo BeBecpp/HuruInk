@@ -1,279 +1,157 @@
-# HuruInk v2.0.0
+# HuruInk
 
 <div align="center">
 
-<img src="public/favicon.svg" alt="HuruInk Banner" width="100%" />
+### Draw in the air. Leave ink on the screen.
 
-<br />
+**A privacy-friendly, browser-based gesture drawing studio powered by real-time hand tracking.**
 
-**Draw in the air with your hand — a webcam-powered gesture drawing app that turns movement into digital ink.**
+[![Live Demo](https://img.shields.io/badge/TRY_LIVE_DEMO-22D3EE?style=for-the-badge&logo=googlechrome&logoColor=071014)](https://bebecpp.github.io/HuruInk/)
+[![Release](https://img.shields.io/badge/RELEASE-v2.0.0-8B5CF6?style=for-the-badge)](https://github.com/BeBecpp/HuruInk/releases/tag/v2.0.0)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![MediaPipe](https://img.shields.io/badge/MediaPipe-00BFA5?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker)
 
-<br />
-
-[![Version](https://img.shields.io/badge/version-v2.0.0-8b5cf6?style=for-the-badge)](https://github.com/BeBecpp/HuruInk/releases/tag/v2.0.0)
-[![Built for Stardance](https://img.shields.io/badge/Hack%20Club-Stardance-f97316?style=for-the-badge)](https://stardance.hackclub.com/)
-[![React](https://img.shields.io/badge/React-20232a?style=for-the-badge\&logo=react\&logoColor=61dafb)](https://react.dev/)
-[![Vite](https://img.shields.io/badge/Vite-646cff?style=for-the-badge\&logo=vite\&logoColor=white)](https://vitejs.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178c6?style=for-the-badge\&logo=typescript\&logoColor=white)](https://www.typescriptlang.org/)
-
-<br />
-
-[Live Demo](https://bebecpp.github.io/HuruInk/) ·
-[GitHub Repo](https://github.com/BeBecpp/HuruInk) ·
-[Release v2.0.0](https://github.com/BeBecpp/HuruInk/releases/tag/v2.0.0)
+[Live demo](https://bebecpp.github.io/HuruInk/) · [How it works](#how-it-works) · [Run locally](#run-locally) · [v2 release](https://github.com/BeBecpp/HuruInk/releases/tag/v2.0.0)
 
 </div>
 
 ---
 
-## Overview
+## The idea
 
-**HuruInk** is a browser-based creative tool that lets users draw on a digital canvas using hand movement through their webcam.
+Webcams normally just record us. HuruInk asks a different question: **what if a webcam could understand what you want to create?**
 
-The idea is simple: instead of using a mouse or stylus, your hand becomes the brush. HuruInk combines webcam input, gesture interaction, canvas drawing, and a polished frontend interface to create a fun air-drawing experience directly inside the browser.
+Raise your hand and your index finger becomes a brush. HuruInk tracks hand landmarks in real time, translates gestures into drawing actions, and renders the result on an HTML Canvas—all inside the browser.
 
-This repository contains the **v2.0.0 Stardance upgrade**, where HuruInk was improved from an earlier prototype into a more complete open-source creative tool.
+No account. No special controller. No camera feed uploaded to a server.
 
-## What Changed in v2
+## Try it in 30 seconds
 
-HuruInk v2 is a major Stardance-focused upgrade of the original project.
+1. Open the **[live demo](https://bebecpp.github.io/HuruInk/)** on a laptop or desktop.
+2. Allow camera access and keep your hand roughly 30–60 cm from the webcam.
+3. Point with your index finger to draw.
+4. Use two fingers to erase, open your palm to pause, or hold a fist to undo.
+5. Save the result as a PNG or keep it in the local gallery.
 
-### New in v2.0.0
+> Best results: use even lighting, avoid strong backlight, and keep your full hand and wrist visible.
 
-* Improved webcam drawing experience
-* Draw mode and erase mode
-* Brush color picker
-* Brush size control
-* Clear canvas button
-* Save drawing as PNG
-* Local gallery/history using `localStorage`
-* Better webcam permission loading and error states
-* Cleaner landing/header section
-* Responsive layout for desktop and mobile
-* More polished visual design
-* Updated documentation and release notes
+## Gesture language
 
----
+| Gesture | Action | Reliability rule |
+| :--- | :--- | :--- |
+| ☝️ Index finger | Draw / hover | Smoothed landmark coordinates |
+| ✌️ Two fingers | Erase | Hand-size-aware distance threshold |
+| 🖐️ Open palm | Pause | Prevents accidental marks |
+| ✊ Fist | Undo | Must remain stable for multiple frames; cooldown protected |
 
-## Core Features
+Keyboard controls are also available: `C` clear, `S` save, `D` draw, and `E` erase.
 
-### Webcam Gesture Drawing
-
-Use your hand movement through the webcam to create digital strokes on the canvas.
-
-### Draw and Erase Modes
-
-Switch between drawing and erasing to control your artwork more naturally.
-
-### Brush Controls
-
-Customize your drawing with brush color and brush size controls.
-
-### Save as PNG
-
-Export your drawing as a PNG image and keep your creations outside the app.
-
-### Local Gallery
-
-Saved drawings can be stored locally in the browser using `localStorage`.
-
-### Responsive UI
-
-HuruInk is designed to work smoothly across different screen sizes with a clean, modern layout.
-
----
-
-## HuruInk System Scheme
+## How it works
 
 ```mermaid
-flowchart TD
-    A[User opens HuruInk] --> B[Browser requests webcam permission]
-
-    B -->|Allowed| C[Webcam video stream starts]
-    B -->|Denied| X[Show permission error state]
-
-    C --> D[Hand movement / gesture input]
-    D --> E[Tracking logic maps hand position]
-    E --> F[Canvas drawing engine]
-
-    F --> G{Selected mode}
-    G -->|Draw Mode| H[Draw stroke with brush color and size]
-    G -->|Erase Mode| I[Erase canvas area]
-
-    H --> J[Canvas output]
-    I --> J[Canvas output]
-
-    J --> K{User action}
-    K -->|Clear| L[Reset canvas]
-    K -->|Save PNG| M[Export drawing as image]
-    K -->|Save to Gallery| N[Store image in localStorage]
-
-    N --> O[Local gallery/history]
-    M --> P[Download PNG]
+flowchart LR
+    Camera["Webcam frames"] --> MP["MediaPipe hand landmarks"]
+    MP --> Quality["Confidence + hand quality"]
+    Quality --> Gesture["Gesture classifier"]
+    Gesture --> Smooth["Coordinate smoothing"]
+    Smooth --> Canvas["Canvas drawing engine"]
+    Canvas --> Output["PNG + local gallery"]
 ```
 
----
+The pipeline stays local to the browser. HuruInk selects the best detected hand, checks landmark quality, recognizes a small gesture vocabulary, smooths the cursor, and sends drawing actions to a high-DPI canvas.
 
-## Tech Stack
+## Engineering the “magic”
 
-| Part       | Technology          |
-| ---------- | ------------------- |
-| Frontend   | React               |
-| Language   | TypeScript          |
-| Build Tool | Vite                |
-| Styling    | CSS / responsive UI |
-| Drawing    | HTML Canvas         |
-| Storage    | localStorage        |
-| Deployment | GitHub Pages        |
-| Version    | v2.0.0              |
+Hand tracking returning coordinates was only the beginning. The difficult part was making noisy predictions feel intentional.
 
----
+- **Mirrored coordinates:** webcam video is mirrored like a familiar selfie view, so landmark positions are transformed to keep the cursor aligned with the user.
+- **Adaptive gestures:** pinch thresholds scale with the apparent size of the hand instead of assuming a fixed camera distance.
+- **Stable strokes:** point smoothing and minimum-distance filtering reduce jitter while quadratic curves keep lines natural.
+- **Accident protection:** destructive gestures require sustained evidence and use cooldowns.
+- **Graceful fallback:** tracking tries GPU first and falls back to CPU; MediaPipe WASM can load locally or from a CDN.
+- **Useful failure states:** camera denial, model loading, low confidence, missing hands, and poor-lighting cases receive specific feedback.
+- **Responsive canvas:** existing stroke coordinates rescale when the viewport changes, while device-pixel-ratio setup keeps exports sharp.
 
-## Project Structure
+## Features
 
-```txt
-HuruInk/
-├── public/
-│   └── screenshots/
-│       ├── huruink-banner.png
-│       ├── huruink-home.png
-│       ├── huruink-drawing.png
-│       └── huruink-gallery.png
-├── src/
-│   ├── components/
-│   ├── assets/
-│   ├── App.tsx
-│   └── main.tsx
-├── package.json
-├── vite.config.ts
-├── README.md
-├── CHANGELOG.md
-└── RELEASE_NOTES.md
+- Real-time browser hand tracking with MediaPipe Tasks Vision
+- Gesture-controlled draw, erase, pause, and undo
+- Colour and brush-size controls
+- Smooth canvas strokes with undo and clear
+- High-resolution PNG export
+- Private browser gallery using `localStorage`
+- GPU-to-CPU and local-to-CDN fallbacks
+- Camera, tracking, confidence, and lighting guidance
+- Debug view for FPS, confidence, gesture, and landmark state
+- Responsive desktop and mobile interface
+
+## Architecture
+
+```text
+src/
+├── components/      Camera canvas, controls, status, gallery, debug UI
+├── hooks/           Camera, hand tracking, drawing, local gallery
+├── utils/           Gestures, geometry, smoothing, drawing, export
+├── types/           Drawing and tracking contracts
+├── App.tsx          Product flow and keyboard shortcuts
+└── main.tsx         React entry point
 ```
 
----
+| Layer | Technology |
+| :--- | :--- |
+| Interface | React 19, TypeScript, Tailwind CSS |
+| Vision | MediaPipe Tasks Vision Hand Landmarker |
+| Rendering | HTML Canvas 2D |
+| Persistence | Browser `localStorage` |
+| Build | Vite |
+| Deployment | GitHub Pages |
 
-## How to Run Locally
-
-### 1. Clone the repository
+## Run locally
 
 ```bash
 git clone https://github.com/BeBecpp/HuruInk.git
 cd HuruInk
-```
-
-### 2. Install dependencies
-
-```bash
 npm install
-```
-
-### 3. Start development server
-
-```bash
 npm run dev
 ```
 
-### 4. Build for production
+Production checks:
 
 ```bash
+npm run lint
 npm run build
-```
-
-### 5. Preview production build
-
-```bash
 npm run preview
 ```
 
----
+## From prototype to v2
 
-## GitHub Pages Deployment
+HuruInk began as a computer-vision experiment. Version 2 turned it into a usable creative tool with explicit gestures, smoothing, adaptive thresholds, erasing, undo protection, PNG export, a local gallery, responsive UI, and clearer recovery states.
 
-The live version is deployed with GitHub Pages:
+That process taught me an important lesson: an AI interaction is not finished when the model produces an output. It is finished when a person can trust what happens next.
 
-```txt
-https://bebecpp.github.io/HuruInk/
-```
+See [CHANGELOG.md](./CHANGELOG.md) and [RELEASE_NOTES.md](./RELEASE_NOTES.md) for release details.
 
-For Vite + GitHub Pages, the project uses this base path:
+## Privacy and limitations
 
-```ts
-base: "/HuruInk/"
-```
+- Camera frames are processed in the browser and are not uploaded by HuruInk.
+- Saved sketches stay in the browser unless the user downloads or removes them.
+- Performance depends on browser support, hardware, lighting, and camera placement.
+- HuruInk is an experimental creative interface, not an accessibility or safety device.
 
----
+## AI-assisted development
 
-## Stardance Upgrade Note
-
-This project was originally started before Stardance, but **v2.0.0** was created as a major upgrade for Hack Club Stardance.
-
-For Stardance, I improved the original HuruInk project with a cleaner UI, better webcam drawing experience, brush controls, erase mode, PNG export, local gallery/history, responsive layout, and stronger documentation.
-
-The goal was to turn HuruInk from a simple prototype into a more polished open-source creative tool that people can actually try and use.
-
----
-
-## AI Usage Note
-
-I used Codex/ChatGPT to help plan the v2 upgrade, improve the UI, debug issues, and write documentation. I reviewed and tested the generated changes myself.
-
----
-
-## What I Learned
-
-While upgrading HuruInk to v2, I practiced:
-
-* Improving an existing project instead of starting from zero
-* Building a more polished frontend interface
-* Working with webcam-based browser interactions
-* Handling user permission states
-* Using canvas-based drawing logic
-* Exporting drawings as PNG images
-* Saving local data with `localStorage`
-* Preparing a project for GitHub release and public demo
-* Writing better open-source documentation
-
----
-
-## Future Improvements
-
-* More accurate hand gesture tracking
-* Multi-hand support
-* More brush styles
-* Undo and redo controls
-* Drawing layers
-* Shareable drawing links
-* Better mobile gesture support
-* Optional AI-assisted drawing effects
-* Online gallery mode
-
----
-
-## Release
-
-### HuruInk v2.0.0 — Stardance Upgrade
-
-This release upgrades HuruInk from an early prototype into a more polished browser-based gesture drawing app.
-
-**Release tag:** `v2.0.0`
-
-**Release title:** `HuruInk v2.0.0 — Stardance Upgrade`
-
----
+Codex/ChatGPT helped with planning, debugging, UI iteration, and documentation. I reviewed, tested, and integrated the resulting changes and remain responsible for the shipped project.
 
 ## Author
 
-Built by **BeBe / Nero_404**
+Built by **Bayarbayasgalan Enkhtulga (Nero_404)**, a high-school AI and cybersecurity builder from Mongolia.
 
-* Portfolio: https://bebecpp.github.io/my_blog/
-* GitHub: https://github.com/BeBecpp/
-* Team: https://notfound404.asuu.app/
+[GitHub](https://github.com/BeBecpp) · [Portfolio](https://bebecpp.github.io/my_blog/) · [LinkedIn](https://www.linkedin.com/in/bayarbayasgalan-enkhtulga-2219a13b9/)
 
 ---
 
-## License
+<div align="center">
 
-This project is open-source. You can use it, learn from it, and improve it.
+**HuruInk v2.0.0 — your hand is the brush.**
 
 </div>
